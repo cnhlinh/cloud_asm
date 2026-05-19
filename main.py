@@ -8,7 +8,7 @@ load_dotenv()
 
 AWS_PROFILE = os.environ.get("AWS_PROFILE")
 AWS_REGION = os.environ.get("AWS_REGION", "us-east-1")
-S3_BUCKET = os.environ["S3_BUCKET"]
+S3_BUCKET_NAME = os.environ["S3_BUCKET_NAME"]
 
 session = boto3.Session(profile_name=AWS_PROFILE, region_name=AWS_REGION)
 s3 = session.client("s3")
@@ -26,7 +26,7 @@ async def upload_file(file: UploadFile = File(...)):
     try:
         s3.upload_fileobj(
             file.file,
-            S3_BUCKET,
+            S3_BUCKET_NAME,
             file.filename,
             ExtraArgs={"ContentType": file.content_type},
         )
