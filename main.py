@@ -7,7 +7,7 @@ from fastapi import FastAPI, File, HTTPException, UploadFile
 load_dotenv()
 
 AWS_REGION = os.environ.get("AWS_REGION", "us-east-1")
-S3_BUCKET_NAME = os.environ["S3_BUCKET_NAME"]
+S3_BUCKET = os.environ["S3_BUCKET"]
 
 _profile = os.environ.get("AWS_PROFILE")
 session = boto3.Session(profile_name=_profile, region_name=AWS_REGION)
@@ -26,7 +26,7 @@ async def upload_file(file: UploadFile = File(...)):
     try:
         s3.upload_fileobj(
             file.file,
-            S3_BUCKET_NAME,
+            S3_BUCKET,
             file.filename,
             ExtraArgs={"ContentType": file.content_type},
         )

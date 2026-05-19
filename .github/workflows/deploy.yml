@@ -20,9 +20,11 @@ jobs:
           script: |
             cd ~/cloud_asm
             git pull origin main
-            echo "AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID" >> .env
-            echo "AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY" >> .env
-            echo "AWS_REGION=$AWS_REGION" >> .env
+            # Rewrite AWS credentials block cleanly to avoid duplicates
+            sed -i '/^AWS_ACCESS_KEY_ID=/d;/^AWS_SECRET_ACCESS_KEY=/d;/^AWS_REGION=/d' .env
+            [ -n "$AWS_ACCESS_KEY_ID" ] && echo "AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID" >> .env
+            [ -n "$AWS_SECRET_ACCESS_KEY" ] && echo "AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY" >> .env
+            [ -n "$AWS_REGION" ] && echo "AWS_REGION=$AWS_REGION" >> .env
             sudo docker compose down
             sudo DOCKER_BUILDKIT=0 docker compose up --build -d
         env:
