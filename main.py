@@ -6,11 +6,12 @@ from fastapi import FastAPI, File, HTTPException, UploadFile
 
 load_dotenv()
 
-AWS_PROFILE = os.environ.get("AWS_PROFILE")
 AWS_REGION = os.environ.get("AWS_REGION", "us-east-1")
 S3_BUCKET_NAME = os.environ["S3_BUCKET_NAME"]
 
-session = boto3.Session(profile_name=AWS_PROFILE, region_name=AWS_REGION)
+# Uses ~/.aws/credentials profile locally; falls back to EC2 IAM role when unset
+_profile = os.environ.get("AWS_PROFILE")
+session = boto3.Session(profile_name=_profile, region_name=AWS_REGION)
 s3 = session.client("s3")
 
 app = FastAPI()
@@ -35,6 +36,6 @@ async def upload_file(file: UploadFile = File(...)):
 
     return {
         "filename": file.filename,
-        "bucket": S3_BUCKET,
-        "url": f"https://{S3_BUCKET}.s3.{AWS_REGION}.amazonaws.com/{file.filename}",
+        "bucket": S3_BUCKET_NAME,
+        "url": f"https://{S3_BUCKET_NAME}.s3.{AWS_REGION}.amazonaws.com/{file.filename}",
     }
