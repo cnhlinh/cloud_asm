@@ -19,5 +19,5 @@ jobs:
           script: |
             cd ~/app
             git pull origin main
-            docker compose down
-            docker compose up --build -d
+            sudo docker compose down
+            sudo DOCKER_BUILDKIT=0 docker compose up --build -d
