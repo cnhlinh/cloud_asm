@@ -7,7 +7,7 @@ from fastapi import FastAPI, File, HTTPException, UploadFile
 load_dotenv()
 
 AWS_REGION = os.environ.get("AWS_REGION", "us-east-1")
-S3_BUCKET = os.environ["S3_BUCKET"]
+S3_BUCKET = os.environ["S3_BUCKET_NAME"]
 
 _profile = os.environ.get("AWS_PROFILE")
 session = boto3.Session(profile_name=_profile, region_name=AWS_REGION)
