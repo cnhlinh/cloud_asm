@@ -20,6 +20,10 @@ jobs:
           script: |
             cd ~/cloud_asm
             git pull origin main
+            # Remove old AWS credential lines and re-add cleanly
+            sed -i '/^AWS_ACCESS_KEY_ID=/d;/^AWS_SECRET_ACCESS_KEY=/d;/^AWS_REGION=/d' .env
+            printf "\nAWS_ACCESS_KEY_ID=%s\nAWS_SECRET_ACCESS_KEY=%s\nAWS_REGION=%s\n" \
+              "$AWS_ACCESS_KEY_ID" "$AWS_SECRET_ACCESS_KEY" "$AWS_REGION" >> .env
             sudo docker compose down
             sudo DOCKER_BUILDKIT=0 docker compose up --build -d
         env:
