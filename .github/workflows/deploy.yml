@@ -17,7 +17,7 @@ jobs:
           username: ${{ secrets.EC2_USERNAME }}
           key: ${{ secrets.EC2_SSH_KEY }}
           script: |
-            cd ~/app
             git pull origin main
+            cd ~/cloud_asm
             sudo docker compose down
             sudo DOCKER_BUILDKIT=0 docker compose up --build -d
