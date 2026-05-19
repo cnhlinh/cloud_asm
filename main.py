@@ -9,7 +9,6 @@ load_dotenv()
 AWS_REGION = os.environ.get("AWS_REGION", "us-east-1")
 S3_BUCKET_NAME = os.environ["S3_BUCKET_NAME"]
 
-# Uses ~/.aws/credentials profile locally; falls back to EC2 IAM role when unset
 _profile = os.environ.get("AWS_PROFILE")
 session = boto3.Session(profile_name=_profile, region_name=AWS_REGION)
 s3 = session.client("s3")
